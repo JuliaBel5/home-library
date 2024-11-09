@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { CreateArtistDto, UpdateArtistDto } from './create-artist.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { TracksService } from 'src/tracks/tracks.service';
+import { AlbumService } from 'src/album/album.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    private readonly albumService: AlbumService,
+  ) {}
   private artists = [];
 
   findAll() {
@@ -32,19 +36,19 @@ export class ArtistService {
       return this.artists[artistIndex];
     }
   }
-
-  async delete(id: string): Promise<boolean> {
-    // Логика удаления артиста
-
-    // Обновление всех треков, где artistId = id
-    const updatedTracks = await this.tracksService.updateTracksByArtistId(id);
-
-    // Логика удаления артиста из базы данных
+  async updateArtistByAlbumId(artistId: string): Promise<void> {
+    this.artists.forEach((artist) => {
+      if (artist.id === artistId) {
+        artist.id = null;
+      }
+    });
+  }
+  async delete(id: string): Promise<void> {
+    await this.tracksService.updateTracksByArtistId(id);
+    await this.albumService.updateArtistByAlbumId(id);
     const artistIndex = this.artists.findIndex((artist) => artist.id === id);
-    if (artistIndex === -1) return false;
+    if (artistIndex === -1) throw new NotFoundException('Artist not found');
 
-    // Удаляем артиста
     this.artists.splice(artistIndex, 1);
-    return true;
   }
 }

@@ -12,7 +12,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-import { CreateArtistDto, UpdateArtistDto } from './create-artist.dto';
+import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { isUUID } from 'class-validator';
 
 @Controller('artist')

@@ -67,7 +67,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    // await this.userRepository.delete(id); // Если  ORM
+    // await this.userRepository.delete(id);
     this.users = this.users.filter((user) => user.id !== id);
   }
 }

@@ -44,7 +44,14 @@ export class TracksService {
   async updateTracksByArtistId(artistId: string): Promise<void> {
     this.tracks.forEach((track) => {
       if (track.artistId === artistId) {
-        track.artistId = null; // Обнуляем artistId
+        track.artistId = null;
+      }
+    });
+  }
+  async updateTracksByAlbumId(albumId: string): Promise<void> {
+    this.tracks.forEach((track) => {
+      if (track.albumId === albumId) {
+        track.albumId = null;
       }
     });
   }

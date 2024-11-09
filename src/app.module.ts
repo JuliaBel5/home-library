@@ -1,5 +1,8 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
+import { AlbumController } from './album/album.controller';
+import { AlbumModule } from './album/album.module';
+import { AlbumService } from './album/album.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArtistController } from './artists/Artist.controller';
@@ -13,12 +16,13 @@ import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
 
 @Module({
-  imports: [UsersModule, TracksModule, ArtistModule],
+  imports: [UsersModule, TracksModule, ArtistModule, AlbumModule],
   controllers: [
     AppController,
     UsersController,
     TracksController,
     ArtistController,
+    AlbumController,
   ],
   providers: [
     AppService,
@@ -29,6 +33,7 @@ import { UsersService } from './users/users.service';
     },
     TracksService,
     ArtistService,
+    AlbumService,
   ],
 })
 export class AppModule {}
