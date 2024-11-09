@@ -41,6 +41,13 @@ export class TracksService {
 
     return track;
   }
+  async updateTracksByArtistId(artistId: string): Promise<void> {
+    this.tracks.forEach((track) => {
+      if (track.artistId === artistId) {
+        track.artistId = null; // Обнуляем artistId
+      }
+    });
+  }
 
   async delete(id: string): Promise<void> {
     const trackIndex = this.tracks.findIndex((track) => track.id === id);
