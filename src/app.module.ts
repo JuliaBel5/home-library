@@ -8,6 +8,8 @@ import { AppService } from './app.service';
 import { ArtistController } from './artists/Artist.controller';
 import { ArtistModule } from './artists/artist.module';
 import { ArtistService } from './artists/artist.service';
+import { FavoritesController } from './favorites/favorites.controller';
+import { FavoritesService } from './favorites/favorites.service';
 import { TracksController } from './tracks/tracks.controller';
 import { TracksModule } from './tracks/tracks.module';
 import { TracksService } from './tracks/tracks.service';
@@ -23,6 +25,7 @@ import { UsersService } from './users/users.service';
     TracksController,
     ArtistController,
     AlbumController,
+    FavoritesController,
   ],
   providers: [
     AppService,
@@ -34,6 +37,7 @@ import { UsersService } from './users/users.service';
     TracksService,
     ArtistService,
     AlbumService,
+    FavoritesService,
   ],
 })
 export class AppModule {}

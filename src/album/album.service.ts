@@ -1,17 +1,22 @@
 import {
-  BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Album } from 'src/types/types';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { isUUID } from 'class-validator';
 import { TracksService } from 'src/tracks/tracks.service';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    @Inject(forwardRef(() => FavoritesService))
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   private albums: Album[] = [];
 
@@ -20,16 +25,7 @@ export class AlbumService {
   }
 
   findOne(id: string): Album {
-    if (!isUUID(id)) {
-      throw new BadRequestException('Invalid album id');
-    }
-
-    const album = this.albums.find((album) => album.id === id);
-
-    if (!album) {
-      throw new NotFoundException('Album not found');
-    }
-    return album;
+    return this.albums.find((album) => album.id === id);
   }
 
   create(createAlbumDto: CreateAlbumDto): Album {
@@ -66,5 +62,13 @@ export class AlbumService {
     }
 
     this.albums.splice(albumIndex, 1);
+    const albumInFavorites = this.favoritesService.findAlbumInFavorites(id);
+    if (albumInFavorites) {
+      // Если альбом есть в избранном, удаляем его
+      this.favoritesService.deleteAlbumFromFavorites(id);
+    } else {
+      // Если альбома нет в избранном, возвращаем 204
+      return; // Простой возврат без контента
+    }
   }
 }

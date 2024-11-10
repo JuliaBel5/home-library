@@ -1,10 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Track } from '../types/types';
 import { CreateTrackDto } from './create-track.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class TracksService {
+  constructor(
+    @Inject(forwardRef(() => FavoritesService))
+    private readonly favoritesService: FavoritesService,
+  ) {}
+
   private tracks: Track[] = [];
 
   async findAll(): Promise<Track[]> {
@@ -63,5 +74,13 @@ export class TracksService {
     }
 
     this.tracks.splice(trackIndex, 1);
+    const trackInFavorites = this.favoritesService.findTrackInFavorites(id);
+    if (trackInFavorites) {
+      // Если есть в Favorites, удаляем его
+      this.favoritesService.deleteTrackFromFavorites(id);
+    } else {
+      // Если не нашли в Favorites, возвращаем 204, чтобы избежать 404
+      return; // Простой возврат без контента
+    }
   }
 }

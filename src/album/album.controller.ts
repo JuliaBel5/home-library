@@ -9,6 +9,7 @@ import {
   HttpCode,
   BadRequestException,
   HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
@@ -25,7 +26,14 @@ export class AlbumController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.albumService.findOne(id);
+    if (!isUUID(id)) {
+      throw new BadRequestException('Invalid album id');
+    }
+    const album = this.albumService.findOne(id);
+    if (!album) {
+      throw new NotFoundException('Album not found');
+    }
+    return album;
   }
 
   @Post()
