@@ -61,14 +61,12 @@ export class AlbumService {
       throw new NotFoundException('Album not found');
     }
 
-    this.albums.splice(albumIndex, 1);
     const albumInFavorites = this.favoritesService.findAlbumInFavorites(id);
     if (albumInFavorites) {
-      // Если альбом есть в избранном, удаляем его
       this.favoritesService.deleteAlbumFromFavorites(id);
     } else {
-      // Если альбома нет в избранном, возвращаем 204
-      return; // Простой возврат без контента
+      return;
     }
+    this.albums.splice(albumIndex, 1);
   }
 }

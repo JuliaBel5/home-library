@@ -18,10 +18,10 @@ import { FavoritesService } from './favorites.service';
 @Controller('favs')
 export class FavoritesController {
   constructor(
-    private readonly favoritesService: FavoritesService,
     private readonly tracksService: TracksService,
     private readonly albumService: AlbumService,
     private readonly artistService: ArtistService,
+    private readonly favoritesService: FavoritesService,
   ) {}
 
   @Get()

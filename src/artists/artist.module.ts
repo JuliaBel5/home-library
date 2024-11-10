@@ -6,7 +6,11 @@ import { ArtistController } from './Artist.controller';
 import { ArtistService } from './artist.service';
 
 @Module({
-  imports: [TracksModule, AlbumModule, forwardRef(() => FavoritesModule)],
+  imports: [
+    forwardRef(() => TracksModule),
+    forwardRef(() => AlbumModule),
+    forwardRef(() => FavoritesModule),
+  ],
   controllers: [ArtistController],
   providers: [ArtistService],
 })

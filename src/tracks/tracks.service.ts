@@ -73,14 +73,13 @@ export class TracksService {
       throw new NotFoundException('Track not found');
     }
 
-    this.tracks.splice(trackIndex, 1);
     const trackInFavorites = this.favoritesService.findTrackInFavorites(id);
     if (trackInFavorites) {
-      // Если есть в Favorites, удаляем его
       this.favoritesService.deleteTrackFromFavorites(id);
     } else {
-      // Если не нашли в Favorites, возвращаем 204, чтобы избежать 404
-      return; // Простой возврат без контента
+      return;
     }
+
+    this.tracks.splice(trackIndex, 1);
   }
 }

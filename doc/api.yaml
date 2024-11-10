@@ -18,18 +18,25 @@ components:
         login:
           type: string
           example: 'TestUser'
+        password:
+          type: string
+          example: 'password123'
         version:
           type: number
           example: 1
-        createAt:
+        createdAt:
           type: number
           example: 1655000000
-        updateAt:
+        updatedAt:
           type: number
           example: 1655000000
       required:
         - id
         - login
+        - password
+        - version
+        - createdAt
+        - updatedAt
     Artist:
       type: object
       properties:
@@ -158,7 +165,7 @@ paths:
     post:
       tags:
         - Signup
-      security: [ ]
+      security: []
       summary: Signup
       description: Signup a user
       requestBody:
