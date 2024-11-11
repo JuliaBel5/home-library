@@ -57,7 +57,6 @@ describe('artist (e2e)', () => {
         .send(createArtistDto);
 
       const { id } = creationResponse.body;
-
       expect(creationResponse.statusCode).toBe(StatusCodes.CREATED);
 
       const searchResponse = await unauthorizedRequest
@@ -339,7 +338,6 @@ describe('artist (e2e)', () => {
       expect(searchAlbumResponse.statusCode).toBe(StatusCodes.OK);
 
       const { artistId: albumArtistId } = searchAlbumResponse.body;
-
       expect(albumArtistId).toBeNull();
     });
   });
