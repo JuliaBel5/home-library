@@ -5,7 +5,7 @@ import { AlbumModule } from './album/album.module';
 import { AlbumService } from './album/album.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArtistController } from './artists/Artist.controller';
+import { ArtistController } from './artists/artist.controller';
 import { ArtistModule } from './artists/artist.module';
 import { ArtistService } from './artists/artist.service';
 import { FavoritesController } from './favorites/favorites.controller';
@@ -16,9 +16,10 @@ import { TracksService } from './tracks/tracks.service';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [UsersModule, TracksModule, ArtistModule, AlbumModule],
+  imports: [UsersModule, TracksModule, ArtistModule, AlbumModule, PrismaModule],
   controllers: [
     AppController,
     UsersController,

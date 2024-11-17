@@ -29,7 +29,7 @@ export class AlbumController {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid album id');
     }
-    const album = this.albumService.findOne(id);
+    const album = await this.albumService.findOne(id);
     if (!album) {
       throw new NotFoundException('Album not found');
     }
@@ -59,6 +59,6 @@ export class AlbumController {
       throw new BadRequestException('Invalid album ID format');
     }
 
-    return this.albumService.delete(id);
+    await this.albumService.delete(id);
   }
 }

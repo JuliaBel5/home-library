@@ -11,6 +11,7 @@ import { isUUID } from 'class-validator';
 import { AlbumService } from 'src/album/album.service';
 import { ArtistService } from 'src/artists/artist.service';
 import { TracksService } from 'src/tracks/tracks.service';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class FavoritesService {
@@ -21,6 +22,7 @@ export class FavoritesService {
     private readonly albumService: AlbumService,
     @Inject(forwardRef(() => ArtistService))
     private readonly artistService: ArtistService,
+    private readonly prismaService: PrismaService,
   ) {}
 
   private favorites = {
@@ -61,35 +63,44 @@ export class FavoritesService {
     return { message: 'Track added to favorites' };
   }
 
-  findTrackInFavorites(trackId: string): boolean {
+  async findTrackInFavorites(trackId: string): Promise<boolean> {
     if (!isUUID(trackId)) {
       throw new BadRequestException('Invalid UUID');
     }
-    const trackExists = this.tracksService.findOneById(trackId);
-    if (trackExists) return true;
+
+    const trackExists = await this.prismaService.track.findUnique({
+      where: { id: trackId },
+    });
+    return !!trackExists;
   }
 
-  findAlbumInFavorites(albumId: string): boolean {
+  async findAlbumInFavorites(albumId: string): Promise<boolean> {
     if (!isUUID(albumId)) {
       throw new BadRequestException('Invalid UUID');
     }
-    const albumExists = this.albumService.findOne(albumId);
-    if (albumExists) return true;
+
+    const albumExists = await this.prismaService.album.findUnique({
+      where: { id: albumId },
+    });
+    return !!albumExists;
   }
 
-  findArtistInFavorites(artistId: string): boolean {
+  async findArtistInFavorites(artistId: string): Promise<boolean> {
     if (!isUUID(artistId)) {
       throw new BadRequestException('Invalid UUID');
     }
-    const artistExists = this.artistService.findOne(artistId);
-    if (artistExists) return true;
+
+    const artistExists = await this.prismaService.artist.findUnique({
+      where: { id: artistId },
+    });
+    return !!artistExists;
   }
 
-  deleteTrackFromFavorites(trackId: string) {
+  async deleteTrackFromFavorites(trackId: string) {
     if (!isUUID(trackId)) {
       throw new BadRequestException('Invalid UUID');
     }
-    const trackExists = this.tracksService.findOneById(trackId);
+    const trackExists = await this.tracksService.findOneById(trackId);
     if (!trackExists) {
       throw new NotFoundException('Track not found in favorites');
     }
@@ -120,12 +131,12 @@ export class FavoritesService {
     return { message: 'Album added to favorites' };
   }
 
-  deleteAlbumFromFavorites(albumId: string) {
+  async deleteAlbumFromFavorites(albumId: string) {
     if (!isUUID(albumId)) {
       throw new BadRequestException('Invalid UUID');
     }
 
-    const albumExists = this.albumService.findOne(albumId);
+    const albumExists = await this.albumService.findOne(albumId);
     if (!albumExists) {
       throw new NotFoundException('Album not found in favorites');
     }
@@ -133,7 +144,6 @@ export class FavoritesService {
     this.favorites.albums = this.favorites.albums.filter(
       (id) => id !== albumId,
     );
-
     return { message: 'Album removed from favorites' };
   }
 
@@ -157,12 +167,12 @@ export class FavoritesService {
     return { message: 'Artist added to favorites' };
   }
 
-  deleteArtistFromFavorites(artistId: string) {
+  async deleteArtistFromFavorites(artistId: string) {
     if (!isUUID(artistId)) {
       throw new BadRequestException('Invalid UUID');
     }
 
-    const artistExists = this.artistService.findOne(artistId);
+    const artistExists = await this.artistService.findOne(artistId);
     if (!artistExists) {
       throw new NotFoundException('Artist not found in favorites');
     }
@@ -170,7 +180,6 @@ export class FavoritesService {
     this.favorites.artists = this.favorites.artists.filter(
       (id) => id !== artistId,
     );
-
     return { message: 'Artist removed from favorites' };
   }
 }

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: "postgres"
+    container_name: home_library_db
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=home_library_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql 
+    networks:
+      - app_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: home_library_app
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "npm", "run", "start"]
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/home_library_db
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - logs_data:/app/logs 
+      - type: bind          
+        source: ./src
+        target: /app/src
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  postgres_logs: 
+  logs_data:    
+
+networks:
+  app_network:
+    driver: bridge

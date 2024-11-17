@@ -32,7 +32,7 @@ export class ArtistController {
 
     const artist = await this.artistService.findOne(id);
     if (!artist) {
-      throw new NotFoundException('Artist not found');
+      throw new NotFoundException('Artist not found890');
     }
 
     return artist;
@@ -54,7 +54,7 @@ export class ArtistController {
 
     const artist = await this.artistService.findOne(id);
     if (!artist) {
-      throw new NotFoundException('Artist not found');
+      throw new NotFoundException('Artist not found789');
     }
 
     return this.artistService.update(id, updateArtistDto);
