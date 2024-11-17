@@ -4,13 +4,14 @@ services:
   postgres:
     image: "postgres"
     container_name: home_library_db
+    env_file: .env
     restart: always
     environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-      - POSTGRES_DB=home_library_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "${PORT_DB}:${PORT_DB}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_logs:/var/log/postgresql 
@@ -22,13 +23,21 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: home_library_app
+    env_file: .env
     command: ["./wait-for-it.sh", "postgres:5432", "--", "npm", "run", "start"]
     environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/home_library_db
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${PORT_DB}/home_library_db
     ports:
-      - "4000:4000"
+      - "${PORT}:${PORT}"
     depends_on:
       - postgres
+    develop:
+      watch:
+      - action: sync+restart
+        path: ./src
+        target: /app/src
+        ignore:
+        - node_modules
     restart: always
     volumes:
       - logs_data:/app/logs 

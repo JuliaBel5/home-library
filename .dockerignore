@@ -2,6 +2,7 @@ node_modules
 dist
 Dockerfile
 .dockerignore
-logs
 .git
+*.log
 postgresDB
+
