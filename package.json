@@ -21,9 +21,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "docker:build": "docker-compose build",
-    "docker:up": "docker compose up -d",
-    "docker:start": "npm run docker:build && npm run docker:up --watch",
+    "docker:build": "docker-compose up --build",
+    "docker:start": "docker compose up --watch",
     "docker:stop": "docker compose down"
   },
   "dependencies": {
