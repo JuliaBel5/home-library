@@ -18,6 +18,14 @@ git clone https://github.com/JuliaBel5/nodejs2024Q3-service.git
 cd nodejs2024Q3-service
 ```
 
+## Switch to the appropriate branch:
+
+To access the database functionality, switch to the feat-add-database branch:
+
+```
+git checkout feat-add-database
+```
+
 ## Install dependencies:
 
 ```
@@ -29,7 +37,12 @@ npm install
 Create a .env file in the project root directory and set up the required environment variables. Example:
 
 ```
-PORT1=4000
+PORT=4000
+PORT_DB=5432
+DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/home_library_db?schema=public"
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=home_library_db
 ```
 
 ## Run the application:
@@ -37,30 +50,21 @@ PORT1=4000
 ## Development mode:
 
 ```
-npm run start:dev
-```
-
-## Production mode:
-
-```
-npm run build
-npm run start:prod
+npm run docker:start
 ```
 
 ## API Documentation
 
-This project uses Swagger for API documentation. Once the application is running, visit `http://localhost:<PORT1>/doc` in your browser to view the API documentation and explore the available endpoints.
+This project uses Swagger for API documentation. Once the application is running, visit `http://localhost:<PORT>/doc` in your browser to view the API documentation and explore the available endpoints.
 
 ## Scripts
 
-- `npm run build` - Compiles the application for production.
 - `npm run format` - Formats the code using Prettier for consistency.
 - `npm run lint` - Runs ESLint to identify and fix code issues.
-- `npm run start` - Runs the application in production mode.
-- `npm run start:dev` - Runs the application in development mode with hot reloading.
+- `npm run docker:start` - Runs the application in development mode.
+- `npm run docker:stop` - Stops and removes the Docker containers and network created by docker compose up.
+- `npm run docker-test` - Analyzes the specified Docker image for known vulnerabilities using Docker Scout.
 - `npm run test` - Executes unit tests using Jest.
-
-Additional scripts are available for debugging, generating test coverage, and running authentication tests.
 
 ## Technologies Used
 
@@ -68,6 +72,7 @@ Additional scripts are available for debugging, generating test coverage, and ru
 - **Swagger** - Integrated for easy-to-use API documentation.
 - **Jest** - Utilized for comprehensive unit and end-to-end testing.
 - **ESLint & Prettier** - Ensures consistent code quality and formatting.
+- **Docker** - Used for containerizing the application, simplifying deployment and ensuring consistent environments.
 
 ## License
 
