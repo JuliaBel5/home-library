@@ -20,7 +20,6 @@ export interface Track {
   albumId: string | null;
   duration: number;
 }
-
 export interface Album {
   id: string;
   name: string;
