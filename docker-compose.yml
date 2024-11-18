@@ -17,9 +17,10 @@ services:
       - app_network
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: juliabel5/nodejs2024q3-service-app:latest
+    #build:
+      #context: .
+      #dockerfile: Dockerfile
     container_name: home_library_app
     env_file: .env
     environment:
@@ -30,20 +31,14 @@ services:
       - postgres
     develop:
       watch:
-      - action: sync
+      - action: sync+restart
         path: ./src
         target: /app/src
         ignore:
-        - node_modules
-      - action: rebuild
-        path: package.json
+          - node_modules
     restart: always
     volumes:
-      - ./src:/app/src
       - logs_data:/app/logs 
-      - type: bind          
-        source: ./src
-        target: /app/src
         
     networks:
       - app_network

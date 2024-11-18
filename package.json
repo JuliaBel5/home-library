@@ -21,9 +21,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "docker:build": "docker-compose up --build",
+    "docker:build": "docker compose up --build",
     "docker:start": "docker compose up --watch",
     "docker:stop": "docker compose down",
+    "docker-test": "docker scout cves juliabel5/nodejs2024q3-service-app",
     "prisma:start": "npx prisma generate && npx prisma migrate deploy"
   },
   "dependencies": {
