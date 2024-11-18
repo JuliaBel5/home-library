@@ -17,10 +17,10 @@ services:
       - app_network
 
   app:
-    image: juliabel5/nodejs2024q3-service-app:latest
-    #build:
-      #context: .
-      #dockerfile: Dockerfile
+    #image: juliabel5/nodejs2024q3-service-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: home_library_app
     env_file: .env
     environment:

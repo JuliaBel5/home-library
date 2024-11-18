@@ -17,8 +17,7 @@ npm-debug.log*
 *.swo
 *.swn
 *.bak
-.pnpm-store
 .cache
-.terraform
+
 
 

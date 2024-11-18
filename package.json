@@ -24,7 +24,7 @@
     "docker:build": "docker compose up --build",
     "docker:start": "docker compose up --watch",
     "docker:stop": "docker compose down",
-    "docker-test": "docker scout cves juliabel5/nodejs2024q3-service-app",
+    "docker-audit": "docker scout cves juliabel5/nodejs2024q3-service-app",
     "prisma:start": "npx prisma generate && npx prisma migrate deploy"
   },
   "dependencies": {

@@ -61,9 +61,9 @@ This project uses Swagger for API documentation. Once the application is running
 
 - `npm run format` - Formats the code using Prettier for consistency.
 - `npm run lint` - Runs ESLint to identify and fix code issues.
-- `npm run docker:start` - Runs the application in development mode.
+- `npm run docker:start` - Runs the application in development (watch) mode.
 - `npm run docker:stop` - Stops and removes the Docker containers and network created by docker compose up.
-- `npm run docker-test` - Analyzes the specified Docker image for known vulnerabilities using Docker Scout.
+- `npm run docker-audit` - Analyzes the specified Docker image for known vulnerabilities using Docker Scout.
 - `npm run test` - Executes unit tests using Jest.
 
 ## Technologies Used
