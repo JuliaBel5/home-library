@@ -3,7 +3,6 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install --only=production && npm cache clean --force
-RUN npm install -g @nestjs/cli
 
 
 COPY prisma ./prisma/
