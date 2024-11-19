@@ -7,7 +7,7 @@ Home Library is a Node.js application built with NestJS to manage your personal 
 ## Prerequisites
 
 - Node.js and npm
-- NestJS CLI (for development)
+- NestJS CLI
 
 ## Setup and Installation
 
@@ -48,6 +48,8 @@ POSTGRES_DB=home_library_db
 ## Run the application:
 
 ## Development mode:
+
+This mode runs in watch mode.
 
 ```
 npm run docker:start
