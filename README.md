@@ -1,72 +1,81 @@
-# Home Library Service
+# Home Library
+
+## Project Overview
+
+Home Library is a Node.js application built with NestJS to manage your personal library collection. This service provides functionality for handling users, tracks, artists, albums, and favorites, offering a complete system to organize and interact with your home library. The project also integrates Swagger to provide detailed API documentation for seamless interaction with the service.
 
 ## Prerequisites
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Node.js and npm
+- NestJS CLI
 
-## Downloading
+## Setup and Installation
+
+## Clone the repository:
 
 ```
-git clone {repository URL}
+git clone https://github.com/JuliaBel5/nodejs2024Q3-service.git
+cd nodejs2024Q3-service
 ```
 
-## Installing NPM modules
+## Switch to the appropriate branch:
+
+To access the database functionality, switch to the feat-add-database branch:
+
+```
+git checkout feat-add-database
+```
+
+## Install dependencies:
 
 ```
 npm install
 ```
 
-## Running application
+## Configure environment variables:
+
+Create a .env file in the project root directory and set up the required environment variables. Example:
 
 ```
-npm start
+PORT=4000
+PORT_DB=5432
+DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/home_library_db?schema=public"
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=home_library_db
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+## Run the application:
 
-## Testing
+## Development mode:
 
-After application running open new terminal and enter:
-
-To run all tests without authorization
+This mode runs in watch mode.
 
 ```
-npm run test
+npm run docker:start
 ```
 
-To run only one of all test suites
+## API Documentation
 
-```
-npm run test -- <path to suite>
-```
+This project uses Swagger for API documentation. Once the application is running, visit `http://localhost:<PORT>/doc` in your browser to view the API documentation and explore the available endpoints.
 
-To run all test with authorization
+## Scripts
 
-```
-npm run test:auth
-```
+- `npm run format` - Formats the code using Prettier for consistency.
+- `npm run lint` - Runs ESLint to identify and fix code issues.
+- `npm run docker:start` - Runs the application in development (watch) mode.
+- `npm run docker:stop` - Stops and removes the Docker containers and network created by docker compose up.
+- `npm run docker-audit` - Analyzes the specified Docker image for known vulnerabilities using Docker Scout.
+- `npm run test` - Executes unit tests using Jest.
 
-To run only specific test suite with authorization
+## Technologies Used
 
-```
-npm run test:auth -- <path to suite>
-```
+- **NestJS** - A powerful Node.js framework for building scalable applications.
+- **Swagger** - Integrated for easy-to-use API documentation.
+- **Jest** - Utilized for comprehensive unit and end-to-end testing.
+- **ESLint & Prettier** - Ensures consistent code quality and formatting.
+- **Docker** - Used for containerizing the application, simplifying deployment and ensuring consistent environments.
 
-### Auto-fix and format
+## License
 
-```
-npm run lint
-```
-
-```
-npm run format
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+This project is UNLICENSED.

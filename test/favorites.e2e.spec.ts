@@ -320,7 +320,6 @@ describe('Favorites (e2e)', () => {
       const tracksResponse = await unauthorizedRequest
         .post(favoritesRoutes.tracks(randomUUID))
         .set(commonHeaders);
-
       expect(tracksResponse.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
     });
   });
