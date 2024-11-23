@@ -1,4 +1,9 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { AlbumController } from './album/album.controller';
 import { AlbumModule } from './album/album.module';
@@ -17,9 +22,20 @@ import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
 import { PrismaModule } from '../prisma/prisma.module';
+//import { AuthModule } from './auth/auth.module';
+import { LoggingModule } from './logging/logging.module';
+import { LoggingMiddleware } from './common/middleware/logging.middleeware';
 
 @Module({
-  imports: [UsersModule, TracksModule, ArtistModule, AlbumModule, PrismaModule],
+  imports: [
+    UsersModule,
+    TracksModule,
+    ArtistModule,
+    AlbumModule,
+    PrismaModule,
+    //AuthModule,
+    LoggingModule,
+  ],
   controllers: [
     AppController,
     UsersController,
@@ -41,4 +57,8 @@ import { PrismaModule } from '../prisma/prisma.module';
     FavoritesService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}

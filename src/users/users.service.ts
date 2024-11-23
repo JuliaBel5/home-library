@@ -25,6 +25,12 @@ export class UsersService {
     });
   }
 
+  async findByLogin(login: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: { login },
+    });
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const dateInSeconds = Math.floor(Date.now() / 1000);
     return await this.prisma.user.create({
