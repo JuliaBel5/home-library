@@ -10,22 +10,26 @@ import {
   BadRequestException,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './create-track.dto';
 import { Track } from 'src/types/types';
 import { isUUID } from 'class-validator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('track')
 export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   getAllTracks() {
     return this.tracksService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getTrackById(@Param('id') id: string): Promise<Track> {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid Track ID');
@@ -40,6 +44,7 @@ export class TracksController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async createTrack(@Body() createTrackDto: CreateTrackDto): Promise<Track> {
     if (!createTrackDto.name || createTrackDto.duration === undefined) {
@@ -53,6 +58,7 @@ export class TracksController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updateTrack(
     @Param('id') id: string,
     @Body() createTrackDto: CreateTrackDto,
@@ -83,6 +89,7 @@ export class TracksController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteTrack(@Param('id') id: string) {
     if (!isUUID(id)) {

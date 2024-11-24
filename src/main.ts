@@ -8,7 +8,8 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { LoggingService } from './logging/logging.service';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-//import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AuthMiddleware } from './common/middleware/auth.middleware';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 dotenv.config({ path: resolve(cwd(), '.env') });
 
@@ -16,12 +17,11 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
   const app = await NestFactory.create(AppModule);
   const loggingService = app.get(LoggingService);
-  app.setGlobalPrefix('/api');
 
   app.useLogger(new LoggingService());
 
-  //  app.useGlobalGuards(app.get(JwtAuthGuard));
-
+  app.useGlobalGuards(app.get(JwtAuthGuard));
+  app.use('/api', new AuthMiddleware().use);
   app.useGlobalFilters(new HttpExceptionFilter(loggingService));
 
   const document = await readFile(resolve(cwd(), 'doc', 'api.yaml'), {

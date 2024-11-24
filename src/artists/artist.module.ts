@@ -1,4 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { PrismaModule } from 'prisma/prisma.module';
 import { AlbumModule } from 'src/album/album.module';
 import { FavoritesModule } from 'src/favorites/favorites.module';
@@ -14,6 +15,6 @@ import { ArtistService } from './artist.service';
     PrismaModule,
   ],
   controllers: [ArtistController],
-  providers: [ArtistService],
+  providers: [ArtistService, JwtService],
 })
 export class ArtistModule {}

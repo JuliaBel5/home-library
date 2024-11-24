@@ -10,21 +10,25 @@ import {
   BadRequestException,
   HttpStatus,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { isUUID } from 'class-validator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     return this.albumService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string) {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid album id');
@@ -37,11 +41,13 @@ export class AlbumController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createAlbumDto: CreateAlbumDto) {
     return this.albumService.create(createAlbumDto);
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
@@ -53,6 +59,7 @@ export class AlbumController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string) {
     if (!isUUID(id)) {

@@ -12,23 +12,27 @@ import {
   BadRequestException,
   HttpStatus,
   ForbiddenException,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './create-user.dto';
 import { isUUID } from 'class-validator';
 import { User } from 'src/types/types';
 import { UpdatePasswordDto } from './update-password.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   getAllUsers() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getUserById(@Param('id') id: string): Promise<Partial<User>> {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid User ID');
@@ -43,6 +47,7 @@ export class UsersController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async createUser(
     @Body() createUserDto: CreateUserDto,
@@ -58,6 +63,7 @@ export class UsersController {
     return userWithoutPassword;
   }
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async updatePassword(
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
@@ -85,6 +91,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteUser(@Param('id') id: string) {
     if (!isUUID(id)) {
