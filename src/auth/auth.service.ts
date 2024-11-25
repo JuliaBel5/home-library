@@ -2,10 +2,12 @@ import {
   Injectable,
   UnauthorizedException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -43,11 +45,15 @@ export class AuthService {
     }
 
     const accessToken = this.generateAccessToken(user.id, user.login);
-    const refreshToken = this.generateRefreshToken(user.id);
+    const refreshToken = this.generateRefreshToken(user.id, user.login);
     return { accessToken, refreshToken, userId: user.id };
   }
 
   async refreshToken(refreshToken: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException('No refresh token provided');
+    }
+
     try {
       const payload = this.jwtService.verify(refreshToken, {
         secret: process.env.JWT_SECRET_REFRESH_KEY,
@@ -56,16 +62,17 @@ export class AuthService {
       const user = await this.usersService.findOneById(payload.userId);
 
       if (!user) {
-        throw new UnauthorizedException('Invalid refresh token');
+        throw new ForbiddenException('Invalid refresh token');
       }
 
       const newAccessToken = this.generateAccessToken(user.id, user.login);
-      const newRefreshToken = this.generateRefreshToken(user.id);
-
+      const newRefreshToken = this.generateRefreshToken(user.id, user.login);
       return { accessToken: newAccessToken, refreshToken: newRefreshToken };
     } catch (error) {
-      console.error('Error during token refresh:', error.message);
-      throw new UnauthorizedException('Invalid refresh token');
+      if (error instanceof TokenExpiredError) {
+        throw new ForbiddenException('Refresh token has expired');
+      }
+      throw new ForbiddenException('Invalid refresh token');
     }
   }
 
@@ -79,9 +86,9 @@ export class AuthService {
     );
   }
 
-  private generateRefreshToken(userId: string): string {
+  private generateRefreshToken(userId: string, login: string): string {
     return this.jwtService.sign(
-      { userId },
+      { userId, login },
       {
         secret: process.env.JWT_SECRET_REFRESH_KEY,
         expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
