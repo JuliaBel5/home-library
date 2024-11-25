@@ -19,8 +19,8 @@ export class LoggingService
 
   constructor() {
     super();
-    this.logFile = path.resolve(__dirname, '../../logs', 'app.log');
-    this.errorLogFile = path.resolve(__dirname, '../../logs', 'error.log');
+    this.logFile = path.resolve(process.cwd(), 'logs', 'app.log');
+    this.errorLogFile = path.resolve(process.cwd(), 'logs', 'error.log');
     this.logLevel = parseInt(process.env.LOG_LEVEL || '2', 10);
     this.maxFileSize = parseInt(process.env.LOG_FILE_MAX_SIZE || '1024', 10);
 

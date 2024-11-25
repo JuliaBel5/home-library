@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { SignupDto } from './signup.dto';
 import { LoginDto } from './login.dto';
 import { RefreshDto } from './refresh.dto';
-import { Public } from 'src/common/public.decorator';
+import { Public } from '../common/public.decorator';
 
 @Controller('auth')
 export class AuthController {
