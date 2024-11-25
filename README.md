@@ -2,12 +2,14 @@
 
 ## Project Overview
 
-Home Library is a Node.js application built with NestJS to manage your personal library collection. This service provides functionality for handling users, tracks, artists, albums, and favorites, offering a complete system to organize and interact with your home library. The project also integrates Swagger to provide detailed API documentation for seamless interaction with the service.
+Home Library is a Node.js application built with NestJS to manage your personal library collection.
+This service provides functionality for handling users, tracks, artists, albums, and favorites, offering a complete system to organize and interact with your home library. The project also integrates Swagger to provide detailed API documentation for seamless interaction with the service.
 
 ## Prerequisites
 
 - Node.js and npm
 - NestJS CLI (for development)
+- Docker
 
 ## Setup and Installation
 
@@ -20,10 +22,10 @@ cd nodejs2024Q3-service
 
 ## Switch to the appropriate branch:
 
-To access the database functionality, switch to the feat-add-database branch:
+To access the loggin and authencitation functionality, switch to the logging-and-auth branch:
 
 ```
-git checkout feat-add-database
+git checkout logging-and-auth
 ```
 
 ## Install dependencies:
@@ -43,6 +45,14 @@ DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/home_library_db?sche
 POSTGRES_USER=myuser
 POSTGRES_PASSWORD=mypassword
 POSTGRES_DB=home_library_db
+CRYPT_SALT=10
+JWT_SECRET_KEY=secret123123
+JWT_SECRET_REFRESH_KEY=secret123123
+TOKEN_EXPIRE_TIME=1h
+TOKEN_REFRESH_EXPIRE_TIME=24h
+LOG_LEVEL=3
+LOG_FILE_MAX_SIZE=1024
+TEST_MODE = 'auth'
 ```
 
 ## Run the application:
@@ -52,6 +62,8 @@ POSTGRES_DB=home_library_db
 ```
 npm run docker:start
 ```
+
+Search for log files inside the log folder inside the container with app
 
 ## API Documentation
 
@@ -64,7 +76,7 @@ This project uses Swagger for API documentation. Once the application is running
 - `npm run docker:start` - Runs the application in development (watch) mode.
 - `npm run docker:stop` - Stops and removes the Docker containers and network created by docker compose up.
 - `npm run docker-audit` - Analyzes the specified Docker image for known vulnerabilities using Docker Scout.
-- `npm run test` - Executes unit tests using Jest.
+- `npm run test:auth` - Executes unit tests using Jest.
 
 ## Technologies Used
 
